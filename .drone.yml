@@ -17,9 +17,10 @@ steps:
       - cp build/preseed.iso upload/debian-storehouse-latest.iso
       
   - name: upload
-    image: cschlosser/drone-ftps
-    hostname: 10.10.0.26:21
-    secrets: [ ftp_username, ftp_password ]
-    ssl: false
-    dest_dir: /srv/iso/debian-storehouse/
-    src_dir: /upload
+    image: appleboy/drone-scp
+    settings:
+      hostname: 10.10.0.26:21
+      secrets: [ ftp_username, ftp_password ]
+      ssl: false
+      dest_dir: /srv/iso/debian-storehouse/
+      src_dir: /upload
