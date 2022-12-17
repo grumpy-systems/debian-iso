@@ -1,7 +1,8 @@
 # Local Debian Image
 
-This is a remastered Debian ISO image used to provide a default installation
-base.
+This is a demo of how to rebuild a Debian ISO image to perform a fully automated
+installation.  It's a companion to [this blog
+post](https://grumpy.systems/2021/custom-debian-iso/).
 
 ## Building This ISO
 
@@ -17,6 +18,13 @@ sudo ant
 
 Root permissions are needed as many of the files that are extracted from the ISO
 have root ownership.  Otherwise, the cleanup commands would not work.
+
+## Install Scripts
+
+As an extra feature of this ISO, you are able to create scripts that are
+executed automatically at the end of the installation.  Just by adding more
+scripts into `install.d`, you can add more.  An example that installs Git is
+included.
 
 ## Upstream Reference
 
