@@ -41,6 +41,7 @@
         <get
             src="${baseurl}/${image-name}"
             dest="${build}/debian.iso"
+            verbose="on"
         />
 
         <echo>Checking SHA256 Sum...</echo>
