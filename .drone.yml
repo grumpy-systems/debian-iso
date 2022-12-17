@@ -7,7 +7,7 @@ steps:
   - name: build
     image: storehouse/image-builder
     commands:
-      - ant package -v
+      - ant package
 
   - name: prepare-upload
     image: storehouse/image-builder
