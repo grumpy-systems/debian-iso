@@ -21,7 +21,7 @@ steps:
   - name: upload
     image: appleboy/drone-scp
     settings:
-      host: 10.10.0.26
+      host: release.storehouse.dev
       username: iso
       password:
         from_secret: ssh_password
