@@ -1,0 +1,25 @@
+---
+kind: pipeline
+type: docker
+name: package-iso
+
+steps:
+  - name: build
+    image: storehouse/image-builder
+    commands:
+      - ant package
+
+  - name: prepare-upload
+    image: storehouse/image-builder
+    commands:
+      - mkdir -p upload/iso
+      - cp build/preseed.iso upload/iso/debian-storehouse-$DRONE_BUILD_NUMBER.iso
+      - cp build/preseed.iso upload/debian-storehouse-latest.iso
+      
+  - name: upload
+    image: cschlosser/drone-ftps
+    hostname: 10.10.0.26:21
+    secrets: [ ftp_username, ftp_password ]
+    ssl: false
+    dest_dir: /srv/iso/debian-storehouse/
+    src_dir: /upload
