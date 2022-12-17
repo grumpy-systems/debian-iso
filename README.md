@@ -32,6 +32,8 @@ This image is built with a couple of assumptions:
 
 1) The installation is completely automated, and will overwrite the first hard
    drive the system sees (`/dev/sda`).
+2) The hostname and domain name will be set via the DHCP hostname.  This can be
+   changed after installation, but during installation no option is presented.
 2) The image is not designed to be written to actual media like a CD or USB
    drive.  It's sole purpose is to boot virtual machines.  _In Theory_ it can be
    written to a plain CD, but this has never been tested.
