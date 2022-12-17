@@ -10,6 +10,11 @@ DIR=$2
 cp $PRESEEDFILE "$DIR"/preseed.cfg
 cp isolinux.cfg "$DIR"/isolinux/isolinux.cfg
 
+# Add our installer scripts
+mkdir "$DIR"/sthse
+cp install.sh "$DIR"/sthse/install.sh
+cp -r install.d "$DIR"/sthse/install.d
+
 # Regenerate sums
 cd "$DIR"
 chmod +w md5sum.txt
