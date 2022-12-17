@@ -15,6 +15,8 @@ steps:
       - mkdir -p upload/iso
       - cp build/preseed.iso upload/iso/debian-storehouse-$DRONE_BUILD_NUMBER.iso
       - cp build/preseed.iso upload/debian-storehouse-latest.iso
+      - sha256sum upload/debian-storehouse-latest.iso > upload/debian-storehouse-latest.iso.sha256
+      - sha256sum upload/iso/debian-storehouse-$DRONE_BUILD_NUMBER.iso > upload/iso/debian-storehouse-$DRONE_BUILD_NUMBER.iso.sha256
       
   - name: upload
     image: appleboy/drone-scp
