@@ -1,0 +1,32 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.163.0/containers/ubuntu
+{
+	"name": "Storehouse Builder",
+	"image": "storehouse/image-builder",
+	
+	// Add the IDs of extensions you want installed when the container is created.
+	"extensions": [
+		"puppet.puppet-vscode"
+	],
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [],
+
+	// Use 'postCreateCommand' to run commands after the container is created.
+	// "postCreateCommand": "uname -a",
+
+	// Comment out connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
+	"remoteUser": "vscode",
+
+	"containerEnv": {
+		// AWS
+		"AWS_ACCESS_KEY_ID": "${localEnv:AWS_ACCESS_KEY_ID}",
+		"AWS_SECRET_ACCESS_KEY": "${localEnv:AWS_SECRET_ACCESS_KEY}",
+		"AWS_DEFAULT_REGION": "${localEnv:AWS_DEFAULT_REGION}",
+
+		// Azure
+		"AZURE_SUBSCRIPTION_ID": "${localEnv:AZURE_SUBSCRIPTION_ID}",
+		"AZURE_CLIENT_ID": "${localEnv:AZURE_CLIENT_ID}",
+		"AZURE_CLIENT_SECRET": "${localEnv:AZURE_CLIENT_SECRET}",
+	}
+}
