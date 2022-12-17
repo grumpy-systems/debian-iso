@@ -24,7 +24,7 @@ steps:
       password:
         from_secret: ftp_password
       port: 22
-      target: /srv/iso/storehouse-debian/
+      target: /srv/iso/debian-storehouse/
       source: upload
       strip_components: 1
 
