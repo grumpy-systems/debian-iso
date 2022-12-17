@@ -1,0 +1,91 @@
+<project name="gitea" default="package" basedir=".">
+    <property name="build" location="build" />
+    <property name="baseurl" value="https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/" />
+
+    <target name="init">
+        <available file="${build}/sums" property="sums.present"/>
+        <available file="${build}/debian.iso" property="iso.present"/>
+
+        <tstamp/>
+    </target>
+
+    <target name="download-sums" unless="sums.present">
+        <get
+            src="${baseurl}SHA256SUMS"
+            dest="${build}/sums"
+        />
+    </target>
+
+    <target name="get-image-name" depends="download-sums">
+        <exec executable="sh" failonerror="true" outputproperty="image-name" dir="${build}">
+            <arg value="-c" />
+            <arg value="grep -e 'debian-10.*-netinst.iso' sums | awk '{print($2)}'" />
+        </exec>
+        <echo>Found image name ${image-name}</echo>
+    </target>
+
+    <target name="get-image-sum" depends="download-sums">
+        <exec executable="sh" failonerror="true" outputproperty="image-sum" dir="${build}">
+            <arg value="-c" />
+            <arg value="grep -e 'debian-10.*-netinst.iso' sums | awk '{print($1)}'" />
+        </exec>
+        <echo>Found image sum ${image-sum}</echo>
+    </target>
+
+    <target name="download-image" depends="get-image-name,get-image-sum" unless="iso.present">
+        <get
+            src="${baseurl}/${image-name}"
+            dest="${build}/debian.iso"
+        />
+
+        <echo>Checking SHA256 Sum...</echo>
+
+        <exec executable="sh" failonerror="true" outputproperty="downloaded-sum" dir="${build}">
+            <arg value="-c" />
+            <arg value="sha256sum debian.iso | awk '{print($1)}'" />
+        </exec>
+
+        <exec executable="bash" failonerror="true" dir="${build}">
+            <arg value="-c" />
+            <arg value="[ &quot;${downloaded-sum}&quot; == &quot;${image-sum}&quot; ]" />
+        </exec>
+    </target>
+
+    <target name="extract" depends="download-image">
+        <delete includeEmptyDirs="true" dir="${build}/extract" failonerror="false" />
+        <mkdir dir="${build}/extract" />
+
+        <exec executable="bsdtar" dir="${build}" failonerror="true">
+            <arg value="-C" />
+            <arg value="./extract" />
+            <arg value="-xf" />
+            <arg value="debian.iso" />
+        </exec>
+    </target>
+
+    <target name="package" depends="init,extract">
+        <echo>Adding preseed configuration...</echo>
+        <exec executable="bash" failonerror="true">
+            <arg value="${basedir}/add-preseed.sh" />
+            <arg value="${basedir}/preseed.cfg" />
+            <arg value="${build}/extract" />
+        </exec>
+
+        <echo>Packaging new ISO</echo>
+        <exec executable="genisoimage" failonerror="true">
+            <arg value="-r" />
+            <arg value="-J" />
+            <arg value="-b" />
+            <arg value="isolinux/isolinux.bin" />
+            <arg value="-c" />
+            <arg value="isolinux/boot.cat" />
+            <arg value="-no-emul-boot" />
+            <arg value="-boot-load-size" />
+            <arg value="4" />
+            <arg value="-boot-info-table" />
+            <arg value="-o" />
+            <arg value="${build}/preseed.iso" />
+            <arg value="${build}/extract" />
+        </exec>
+    </target>
+</project>
