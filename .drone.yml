@@ -26,5 +26,5 @@ steps:
       port: 22
       target: /srv/iso/storehouse-debian/
       source: upload
-      strip_components: true
+      strip_components: 1
 
