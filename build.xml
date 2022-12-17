@@ -3,6 +3,11 @@
     <property name="baseurl" value="https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/" />
 
     <target name="init">
+        <exec executable="mkdir" failonerror="false">
+            <arg value="-p" />
+            <arg value="${build}" />
+        </exec>
+
         <available file="${build}/sums" property="sums.present"/>
         <available file="${build}/debian.iso" property="iso.present"/>
 
