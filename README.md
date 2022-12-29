@@ -45,3 +45,19 @@ This image is built with a couple of assumptions:
 2) The image is not designed to be written to actual media like a CD or USB
    drive.  It's sole purpose is to boot virtual machines.  _In Theory_ it can be
    written to a plain CD, but this has never been tested.
+
+## Fully Automated vs Semi-Automated
+
+This code, as it sits, will prompt you for a username and password and disable
+the root account.  If you prefer to have nothing asked and set an insecure
+password, add these to the `preseed.cfg` file:
+
+```
+d-i passwd/username string debian
+d-i passwd/user-password password debian
+d-i passwd/user-password-again password debian
+d-i passwd/user-fullname string debian
+```
+
+Replace the lines with values you want, and be sure to change the password after
+the install is finished!
